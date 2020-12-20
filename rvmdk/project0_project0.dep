@@ -1,13 +1,24 @@
 Dependencies for Project 'project0', Target 'project0': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\project0.c)(0x5FAA0781)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I .. -I .\ --c99-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="531" -D_RTE_ -DTM4C123GH6PM -D_RTE_ -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\rvmdk\project0.o --omf_browse .\rvmdk\project0.crf --depend .\rvmdk\project0.d)
+F (.\project0.c)(0x5FB8ACCB)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I .. -I .\ --c99-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="531" -D_RTE_ -DTM4C123GH6PM -D_RTE_ -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\rvmdk\project0.o --omf_browse .\rvmdk\project0.crf --depend .\rvmdk\project0.d)
 I (C:\Program_Files\keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
 I (C:\Program_Files\keil\ARM\ARMCC\include\stdbool.h)(0x5EC775F6)
-I (inc/hw_types.h)(0x5F850478)
+I (inc/hw_ints.h)(0x5F850478)
 I (inc/hw_memmap.h)(0x5F850478)
-I (driverlib/sysctl.h)(0x5F850476)
+I (inc/hw_types.h)(0x5F850478)
+I (driverlib/debug.h)(0x5F850476)
+I (driverlib/fpu.h)(0x5F850476)
 I (driverlib/gpio.h)(0x5F850476)
-F (.\startup_rvmdk.S)(0x5F850477)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 531" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1" --pd "_RTE_ SETA 1"-o .\rvmdk\startup_rvmdk.o --depend .\rvmdk\startup_rvmdk.d)
+I (driverlib/interrupt.h)(0x5F850476)
+I (driverlib/pin_map.h)(0x5F850476)
+I (driverlib/rom.h)(0x5F850476)
+I (driverlib/rom_map.h)(0x5F850476)
+I (driverlib/sysctl.h)(0x5F850476)
+I (driverlib/timer.h)(0x5F850476)
+I (driverlib/uart.h)(0x5F850476)
+I (utils/uartstdio.h)(0x5F850479)
+I (C:\Program_Files\keil\ARM\ARMCC\include\stdarg.h)(0x5EC775FC)
+F (.\startup_rvmdk.S)(0x5FAFF0C6)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 531" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1" --pd "_RTE_ SETA 1"-o .\rvmdk\startup_rvmdk.o --depend .\rvmdk\startup_rvmdk.d)
 F (.\driverlib\rvmdk\driverlib.lib)(0x5F850476)()
 F (.\readme.txt)(0x5F850477)()
 F (.\drivers\buttons.c)(0x5F8510E5)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I .. -I .\ --c99-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="531" -D_RTE_ -DTM4C123GH6PM -D_RTE_ -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\rvmdk\buttons.o --omf_browse .\rvmdk\buttons.crf --depend .\rvmdk\buttons.d)
@@ -37,3 +48,18 @@ I (.\driverlib/rom_map.h)(0x5F850476)
 I (.\driverlib/sysctl.h)(0x5F850476)
 I (.\driverlib/timer.h)(0x5F850476)
 I (.\drivers/rgb.h)(0x5F850477)
+F (.\utils\uartstdio.c)(0x5F850479)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I .. -I .\ --c99-I.\RTE\_project0-IC:\Users\qianniu\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\qianniu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="531" -D_RTE_ -DTM4C123GH6PM -D_RTE_ -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\rvmdk\uartstdio.o --omf_browse .\rvmdk\uartstdio.crf --depend .\rvmdk\uartstdio.d)
+I (C:\Program_Files\keil\ARM\ARMCC\include\stdbool.h)(0x5EC775F6)
+I (C:\Program_Files\keil\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
+I (C:\Program_Files\keil\ARM\ARMCC\include\stdarg.h)(0x5EC775FC)
+I (.\inc/hw_ints.h)(0x5F850478)
+I (.\inc/hw_memmap.h)(0x5F850478)
+I (.\inc/hw_types.h)(0x5F850478)
+I (.\inc/hw_uart.h)(0x5F850478)
+I (.\driverlib/debug.h)(0x5F850476)
+I (.\driverlib/interrupt.h)(0x5F850476)
+I (.\driverlib/rom.h)(0x5F850476)
+I (.\driverlib/rom_map.h)(0x5F850476)
+I (.\driverlib/sysctl.h)(0x5F850476)
+I (.\driverlib/uart.h)(0x5F850476)
+I (.\utils/uartstdio.h)(0x5F850479)

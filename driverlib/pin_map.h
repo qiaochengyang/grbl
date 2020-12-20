@@ -39,7 +39,9 @@
 
 #ifndef __DRIVERLIB_PIN_MAP_H__
 #define __DRIVERLIB_PIN_MAP_H__
-
+#ifndef PART_TM4C123GH6PM
+  #define PART_TM4C123GH6PM
+#endif
 //*****************************************************************************
 //
 // TM4C1230C3PM Port/Pin Mapping Definitions

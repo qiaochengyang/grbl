@@ -29,37 +29,37 @@
 
 #ifdef CPU_MAP_ATMEGA328P // (Arduino Uno) Officially supported by Grbl.
 
+  #define F_CPU MAP_SysCtlClockGet()
   // Define serial port pins and interrupt vectors.
   #define SERIAL_RX     USART_RX_vect
   #define SERIAL_UDRE   USART_UDRE_vect
 
   // Define step pulse output pins. NOTE: All step bit pins must be on the same port.
-  #define STEP_DDR        DDRD
-  #define STEP_PORT       PORTD
+  #define STEP_SYSCTL     SYSCTL_PERIPH_GPIOF
+  #define STEP_PORT       GPIO_PORTF_BASE
   #define X_STEP_BIT      2  // Uno Digital Pin 2
   #define Y_STEP_BIT      3  // Uno Digital Pin 3
   #define Z_STEP_BIT      4  // Uno Digital Pin 4
   #define STEP_MASK       ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
 
   // Define step direction output pins. NOTE: All direction pins must be on the same port.
-  #define DIRECTION_DDR     DDRD
-  #define DIRECTION_PORT    PORTD
+  #define DIRECTION_SYSCTL  SYSCTL_PERIPH_GPIOF
+  #define DIRECTION_PORT    GPIO_PORTF_BASE
   #define X_DIRECTION_BIT   5  // Uno Digital Pin 5
   #define Y_DIRECTION_BIT   6  // Uno Digital Pin 6
   #define Z_DIRECTION_BIT   7  // Uno Digital Pin 7
   #define DIRECTION_MASK    ((1<<X_DIRECTION_BIT)|(1<<Y_DIRECTION_BIT)|(1<<Z_DIRECTION_BIT)) // All direction bits
 
   // Define stepper driver enable/disable output pin.
-  #define STEPPERS_DISABLE_DDR    DDRB
-  #define STEPPERS_DISABLE_PORT   PORTB
-  #define STEPPERS_DISABLE_BIT    0  // Uno Digital Pin 8
-  #define STEPPERS_DISABLE_MASK   (1<<STEPPERS_DISABLE_BIT)
+  #define STEPPERS_DISABLE_SYSCTL    SYSCTL_PERIPH_GPIOF
+  #define STEPPERS_DISABLE_PORT      GPIO_PORTF_BASE
+  #define STEPPERS_DISABLE_BIT       0  // Uno Digital Pin 8
+  #define STEPPERS_DISABLE_MASK      (1<<STEPPERS_DISABLE_BIT)
 
   // Define homing/hard limit switch input pins and limit interrupt vectors.
   // NOTE: All limit bit pins must be on the same port, but not on a port with other input pins (CONTROL).
-  #define LIMIT_DDR        DDRB
-  #define LIMIT_PIN        PINB
-  #define LIMIT_PORT       PORTB
+  #define LIMIT_SYSCTL     SYSCTL_PERIPH_GPIOF
+  #define LIMIT_PORT       GPIO_PORTF_BASE
   #define X_LIMIT_BIT      1  // Uno Digital Pin 9
   #define Y_LIMIT_BIT      2  // Uno Digital Pin 10
   #ifdef VARIABLE_SPINDLE // Z Limit pin and spindle enabled swapped to access hardware PWM on Pin 11.
@@ -70,15 +70,13 @@
   #if !defined(ENABLE_DUAL_AXIS)
     #define LIMIT_MASK     ((1<<X_LIMIT_BIT)|(1<<Y_LIMIT_BIT)|(1<<Z_LIMIT_BIT)) // All limit bits
   #endif
-  #define LIMIT_INT        PCIE0  // Pin change interrupt enable pin
-  #define LIMIT_INT_vect   PCINT0_vect
-  #define LIMIT_PCMSK      PCMSK0 // Pin change interrupt register
+  #define LIMIT_INT        GPIO_INT_PIN_0|GPIO_INT_PIN_4  // Pin change interrupt enable pin
+ 
 
   // Define user-control controls (cycle start, reset, feed hold) input pins.
   // NOTE: All CONTROLs pins must be on the same port and not on a port with other input pins (limits).
-  #define CONTROL_DDR       DDRC
-  #define CONTROL_PIN       PINC
-  #define CONTROL_PORT      PORTC
+  #define CONTROL_SYSCTL        SYSCTL_PERIPH_GPIOF
+  #define CONTROL_PORT          GPIO_PORTF_BASE
   #define CONTROL_RESET_BIT         0  // Uno Analog Pin 0
   #define CONTROL_FEED_HOLD_BIT     1  // Uno Analog Pin 1
   #define CONTROL_CYCLE_START_BIT   2  // Uno Analog Pin 2
@@ -90,11 +88,10 @@
   #define CONTROL_INVERT_MASK   CONTROL_MASK // May be re-defined to only invert certain control pins.
 
   // Define probe switch input pin.
-  #define PROBE_DDR       DDRC
-  #define PROBE_PIN       PINC
-  #define PROBE_PORT      PORTC
-  #define PROBE_BIT       5  // Uno Analog Pin 5
-  #define PROBE_MASK      (1<<PROBE_BIT)
+  #define PROBE_SYSCTL       SYSCTL_PERIPH_GPIOF
+  #define PROBE_PORT         GPIO_PORTF_BASE
+  #define PROBE_BIT           5  // Uno Analog Pin 5
+  #define PROBE_MASK        (1<<PROBE_BIT)
 
   #if !defined(ENABLE_DUAL_AXIS)
 

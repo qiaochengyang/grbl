@@ -31,6 +31,22 @@
 // #include <avr/interrupt.h>
 // #include <avr/wdt.h>
 // #include <util/delay.h>
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_gpio.h"
+#include "driverlib/debug.h"
+#include "driverlib/fpu.h"
+#include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/timer.h"
+#include "driverlib/uart.h"
+#include "utils/uartstdio.h"
+
 #include <math.h>
 #include <inttypes.h>
 #include <string.h>
@@ -64,6 +80,9 @@
 // ---------------------------------------------------------------------------------------
 // COMPILE-TIME ERROR CHECKING OF DEFINE VALUES:
 
+#ifndef rvmdk
+  #define rvmdk
+#endif
 #ifndef HOMING_CYCLE_0
   #error "Required HOMING_CYCLE_0 not defined."
 #endif

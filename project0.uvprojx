@@ -428,6 +428,11 @@
               <FileType>1</FileType>
               <FilePath>.\drivers\rgb.c</FilePath>
             </File>
+            <File>
+              <FileName>uartstdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\uartstdio.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

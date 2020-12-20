@@ -49,8 +49,7 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/eeprom.h"
-
-//*****************************************************************************
+//*********************************************** ******************************
 //
 //! \addtogroup eeprom_api
 //! @{

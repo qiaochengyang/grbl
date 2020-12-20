@@ -66,9 +66,9 @@
 // the startup script. The lower half contains the global settings and space for future
 // developments.
 #define EEPROM_ADDR_GLOBAL         1U
-#define EEPROM_ADDR_PARAMETERS     512U
-#define EEPROM_ADDR_STARTUP_BLOCK  768U
-#define EEPROM_ADDR_BUILD_INFO     942U
+#define EEPROM_ADDR_PARAMETERS     256 //512U 
+#define EEPROM_ADDR_STARTUP_BLOCK  384 //768U
+#define EEPROM_ADDR_BUILD_INFO     471 //942U
 
 // Define EEPROM address indexing for coordinate parameters
 #define N_COORDINATE_SYSTEM 6  // Number of supported work coordinate systems (from index 1)

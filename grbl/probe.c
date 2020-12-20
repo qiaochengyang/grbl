@@ -28,12 +28,31 @@ uint8_t probe_invert_mask;
 // Probe pin initialization routine.
 void probe_init()
 {
-  PROBE_DDR &= ~(PROBE_MASK); // Configure as input pins
-  #ifdef DISABLE_PROBE_PIN_PULL_UP
-    PROBE_PORT &= ~(PROBE_MASK); // Normal low operation. Requires external pull-down.
-  #else
-    PROBE_PORT |= PROBE_MASK;    // Enable internal pull-up resistors. Normal high operation.
-  #endif
+  // PROBE_DDR &= ~(PROBE_MASK); // Configure as input pins
+  // #ifdef DISABLE_PROBE_PIN_PULL_UP
+  //   PROBE_PORT &= ~(PROBE_MASK); // Normal low operation. Requires external pull-down.
+  // #else
+  //   PROBE_PORT |= PROBE_MASK;    // Enable internal pull-up resistors. Normal high operation.
+  // #endif
+  // Enable the GPIO port to which the pushbuttons are connected.
+  //
+  MAP_SysCtlPeripheralEnable(PROBE_SYSCTL);
+
+  //
+  // Unlock PF0 so we can change it to a GPIO input
+  // Once we have enabled (unlocked) the commit register then re-lock it
+  // to prevent further changes.  PF0 is muxed with NMI thus a special case.
+  //
+  HWREG(PROBE_PORT + GPIO_O_LOCK) = GPIO_LOCK_KEY;
+  HWREG(PROBE_PORT + GPIO_O_CR) |= 0x01;
+  HWREG(PROBE_PORT + GPIO_O_LOCK) = 0;
+
+  //
+  // Set each of the button GPIO pins as an input with a pull-up.
+  //
+  MAP_GPIODirModeSet(PROBE_PORT, LIMIT_MASK, GPIO_DIR_MODE_IN);
+  MAP_GPIOPadConfigSet(PROBE_PORT, LIMIT_MASK,
+                        GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
   probe_configure_invert_mask(false); // Initialize invert mask.
 }
 
@@ -50,7 +69,7 @@ void probe_configure_invert_mask(uint8_t is_probe_away)
 
 
 // Returns the probe pin state. Triggered = true. Called by gcode parser and probe state monitor.
-uint8_t probe_get_state() { return((PROBE_PIN & PROBE_MASK) ^ probe_invert_mask); }
+uint8_t probe_get_state() { return((GPOPinRead(PROBE_PORT,PROBE_MASK)) ^ probe_invert_mask); }
 
 
 // Monitors probe pin state and records the system position when detected. Called by the

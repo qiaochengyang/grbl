@@ -24,9 +24,6 @@
 
 #ifndef __UARTSTDIO_H__
 #define __UARTSTDIO_H__
-
-#include <stdarg.h>
-
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
@@ -37,7 +34,9 @@
 extern "C"
 {
 #endif
-
+#ifndef UART_BUFFERED
+#define UART_BUFFERED
+#endif
 //*****************************************************************************
 //
 // If built for buffered operation, the following labels define the sizes of

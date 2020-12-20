@@ -1,3 +1,4 @@
+
 /*
   limits.c - code pertaining to limit-switches and performing the homing cycle
   Part of Grbl
@@ -40,34 +41,69 @@
 
 void limits_init()
 {
-  LIMIT_DDR &= ~(LIMIT_MASK); // Set as input pins
+  // LIMIT_DDR &= ~(LIMIT_MASK); // Set as input pins
+  
+  // #ifdef DISABLE_LIMIT_PIN_PULL_UP
+  //   LIMIT_PORT &= ~(LIMIT_MASK); // Normal low operation. Requires external pull-down.
+  // #else
+  //   LIMIT_PORT |= (LIMIT_MASK);  // Enable internal pull-up resistors. Normal high operation.
+  // #endif
 
-  #ifdef DISABLE_LIMIT_PIN_PULL_UP
-    LIMIT_PORT &= ~(LIMIT_MASK); // Normal low operation. Requires external pull-down.
-  #else
-    LIMIT_PORT |= (LIMIT_MASK);  // Enable internal pull-up resistors. Normal high operation.
-  #endif
+  // if (bit_istrue(settings.flags,BITFLAG_HARD_LIMIT_ENABLE)) {
+  //   LIMIT_PCMSK |= LIMIT_MASK; // Enable specific pins of the Pin Change Interrupt
+  //   PCICR |= (1 << LIMIT_INT); // Enable Pin Change Interrupt
+  // } else {
+  //   limits_disable();
 
-  if (bit_istrue(settings.flags,BITFLAG_HARD_LIMIT_ENABLE)) {
-    LIMIT_PCMSK |= LIMIT_MASK; // Enable specific pins of the Pin Change Interrupt
-    PCICR |= (1 << LIMIT_INT); // Enable Pin Change Interrupt
-  } else {
-    limits_disable();
-  }
+  // }
 
-  #ifdef ENABLE_SOFTWARE_DEBOUNCE
-    MCUSR &= ~(1<<WDRF);
-    WDTCSR |= (1<<WDCE) | (1<<WDE);
-    WDTCSR = (1<<WDP0); // Set time-out at ~32msec.
-  #endif
+  // #ifdef ENABLE_SOFTWARE_DEBOUNCE
+  //   MCUSR &= ~(1<<WDRF);
+  //   WDTCSR |= (1<<WDCE) | (1<<WDE);
+  //   WDTCSR = (1<<WDP0); // Set time-out at ~32msec.
+  // #endif
+
+
+  //
+    // Enable the GPIO port to which the pushbuttons are connected.
+    //
+    MAP_SysCtlPeripheralEnable(LIMIT_SYSCTL);
+
+    //
+    // Unlock PF0 so we can change it to a GPIO input
+    // Once we have enabled (unlocked) the commit register then re-lock it
+    // to prevent further changes.  PF0 is muxed with NMI thus a special case.
+    //
+    HWREG(LIMIT_PORT + GPIO_O_LOCK) = GPIO_LOCK_KEY;
+    HWREG(LIMIT_PORT + GPIO_O_CR) |= 0x01;
+    HWREG(LIMIT_PORT + GPIO_O_LOCK) = 0;
+
+    //
+    // Set each of the button GPIO pins as an input with a pull-up.
+    //
+    MAP_GPIODirModeSet(LIMIT_PORT, LIMIT_MASK, GPIO_DIR_MODE_IN);
+    MAP_GPIOPadConfigSet(LIMIT_PORT, LIMIT_MASK,
+                         GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    if (bit_istrue(settings.flags,BITFLAG_HARD_LIMIT_ENABLE)) {
+      // LIMIT_PCMSK |= LIMIT_MASK; // Enable specific pins of the Pin Change Interrupt
+      // PCICR |= (1 << LIMIT_INT); // Enable Pin Change Interrupt
+      GPIOIntTypeSet(LIMIT_PORT,LIMIT_MASK,GPIO_RISING_EDGE);
+      GPIOIntRegister(LIMIT_PORT, LimitSigINtHandler);
+      GPIOIntEnable(LIMIT_PORT,LIMIT_INT);
+    } else {
+      limits_disable();
+
+  }                     
+    
 }
 
 
 // Disables hard limits.
 void limits_disable()
 {
-  LIMIT_PCMSK &= ~LIMIT_MASK;  // Disable specific pins of the Pin Change Interrupt
-  PCICR &= ~(1 << LIMIT_INT);  // Disable Pin Change Interrupt
+  // LIMIT_PCMSK &= ~LIMIT_MASK;  // Disable specific pins of the Pin Change Interrupt
+  // PCICR &= ~(1 << LIMIT_INT);  // Disable Pin Change Interrupt
+  GPIOIntDisable(LIMIT_PORT,LIMIT_INT);
 }
 
 
@@ -77,7 +113,7 @@ void limits_disable()
 uint8_t limits_get_state()
 {
   uint8_t limit_state = 0;
-  uint8_t pin = (LIMIT_PIN & LIMIT_MASK);
+  uint8_t pin =GPIOPinRead(LIMIT_PORT,LIMIT_MASK);
   #ifdef INVERT_LIMIT_PIN_MASK
     pin ^= INVERT_LIMIT_PIN_MASK;
   #endif
@@ -107,8 +143,9 @@ uint8_t limits_get_state()
 // special pinout for an e-stop, but it is generally recommended to just directly connect
 // your e-stop switch to the Arduino reset pin, since it is the most correct way to do this.
 #ifndef ENABLE_SOFTWARE_DEBOUNCE
-  ISR(LIMIT_INT_vect) // DEFAULT: Limit pin change interrupt process.
+  void LimitSigINtHandler() // DEFAULT: Limit pin change interrupt process.
   {
+    GPIOIntClear(LIMIT_PORT,LIMIT_INT);
     // Ignore limit switches if already in an alarm state or in-process of executing an alarm.
     // When in the alarm state, Grbl should have been reset or will force a reset, so any pending
     // moves in the planner and serial buffers are all cleared and newly sent blocks will be

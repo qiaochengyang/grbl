@@ -20,10 +20,10 @@
 */
 
 #include "grbl.h"
-
+#include "settings.h"
 settings_t settings;
 
-const __flash settings_t defaults = {\
+const settings_t defaults = {\
     .pulse_microseconds = DEFAULT_STEP_PULSE_MICROSECONDS,
     .stepper_idle_lock_time = DEFAULT_STEPPER_IDLE_LOCK_TIME,
     .step_invert_mask = DEFAULT_STEPPING_INVERT_MASK,
@@ -305,6 +305,7 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
 
 // Initialize the config subsystem
 void settings_init() {
+  eeprom_init();
   if(!read_global_settings()) {
     report_status_message(STATUS_SETTING_READ_FAIL);
     settings_restore(SETTINGS_RESTORE_ALL); // Force restore all EEPROM data.

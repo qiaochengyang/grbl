@@ -40,7 +40,9 @@
 
 #ifndef __HW_INTS_H__
 #define __HW_INTS_H__
-
+#ifndef PART_TM4C123GH6PM
+  #define PART_TM4C123GH6PM
+#endif
 //*****************************************************************************
 //
 // The following are defines for the fault assignments.
